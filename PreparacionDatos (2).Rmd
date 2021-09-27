@@ -1,0 +1,1351 @@
+---
+title: "Preparación datos"
+author: "Ana Ibáñez Palacios y Cristina Amadó Ruiz"
+date: "6/6/2021"
+output: html_document
+---
+
+Primero cargamos los datos en donde se encuentran las variables fisiológicas y luego los datos de ubicación.
+
+<br>
+Cargamos los datos fisiológicos y los datos de ubicación. El objetivo es juntar ambos dataset por año mediante la variable 'i..caseid', que es un tipo de identificador. Este campo es de tipo string, pero tiene espacios en blanco, por lo que lo primero que hacemos es eliminar todos los espacios del string para poder trabajar de forma correcta con los datos.
+
+```{r}
+library(stringr)
+
+#Datos Inicales
+
+
+data2007 <- read.csv("C:\\Users\\anaib\\Desktop\\MÁSTER\\TFM\\DatosLimpios\\datos2007limpios.csv",sep = ';')
+data2008 <- read.csv("C:\\Users\\anaib\\Desktop\\MÁSTER\\TFM\\DatosLimpios\\datos2008limpios.csv",sep = ',')
+data2009 <- read.csv("C:\\Users\\anaib\\Desktop\\MÁSTER\\TFM\\DatosLimpios\\datos2009limpios.csv",sep = ';')
+data2010 <- read.csv("C:\\Users\\anaib\\Desktop\\MÁSTER\\TFM\\DatosLimpios\\datos2010limpios.csv",sep = ';')
+data2011 <- read.csv("C:\\Users\\anaib\\Desktop\\MÁSTER\\TFM\\DatosLimpios\\datos2011limpios.csv",sep = ';')
+data2012 <- read.csv("C:\\Users\\anaib\\Desktop\\MÁSTER\\TFM\\DatosLimpios\\datos2012limpios.csv",sep = ';')
+data2013 <- read.csv("C:\\Users\\anaib\\Desktop\\MÁSTER\\TFM\\DatosLimpios\\datos2013limpios.csv",sep = ';')
+data2014 <- read.csv("C:\\Users\\anaib\\Desktop\\MÁSTER\\TFM\\DatosLimpios\\datos2014limpios.csv",sep = ';')
+data2015 <- read.csv("C:\\Users\\anaib\\Desktop\\MÁSTER\\TFM\\DatosLimpios\\datos2015limpios.csv",sep = ';')
+data2016 <- read.csv("C:\\Users\\anaib\\Desktop\\MÁSTER\\TFM\\DatosLimpios\\datos2016limpios.csv",sep = ';')
+data2017 <- read.csv("C:\\Users\\anaib\\Desktop\\MÁSTER\\TFM\\DatosLimpios\\datos2017limpios.csv",sep = ';')
+data2018 <- read.csv("C:\\Users\\anaib\\Desktop\\MÁSTER\\TFM\\DatosLimpios\\datos2018limpios.csv",sep = ';')
+data2019 <- read.csv("C:\\Users\\anaib\\Desktop\\MÁSTER\\TFM\\DatosLimpios\\datos2019limpios.csv",sep = ';')
+
+#Datos ubicación
+
+data2007_ubi <- read.csv("C:\\Users\\anaib\\Desktop\\MÁSTER\\TFM\\DatosUbicacion\\2007.csv",sep = ',')
+data2008_ubi <- read.csv("C:\\Users\\anaib\\Desktop\\MÁSTER\\TFM\\DatosUbicacion\\2008.csv",sep = ';')
+data2009_ubi <- read.csv("C:\\Users\\anaib\\Desktop\\MÁSTER\\TFM\\DatosUbicacion\\2009.csv",sep = ';')
+data2010_ubi <- read.csv("C:\\Users\\anaib\\Desktop\\MÁSTER\\TFM\\DatosUbicacion\\2010.csv",sep = ';')
+data2011_ubi <- read.csv("C:\\Users\\anaib\\Desktop\\MÁSTER\\TFM\\DatosUbicacion\\2011.csv",sep = ';')
+data2012_ubi <- read.csv("C:\\Users\\anaib\\Desktop\\MÁSTER\\TFM\\DatosUbicacion\\2012.csv",sep = ';')
+data2013_ubi <- read.csv("C:\\Users\\anaib\\Desktop\\MÁSTER\\TFM\\DatosUbicacion\\2013.csv",sep = ';')
+data2014_ubi <- read.csv("C:\\Users\\anaib\\Desktop\\MÁSTER\\TFM\\DatosUbicacion\\2014.csv",sep = ';')
+data2015_ubi <- read.csv("C:\\Users\\anaib\\Desktop\\MÁSTER\\TFM\\DatosUbicacion\\2015.csv",sep = ';')
+data2016_ubi <- read.csv("C:\\Users\\anaib\\Desktop\\MÁSTER\\TFM\\DatosUbicacion\\2016.csv",sep = ';')
+data2017_ubi <- read.csv("C:\\Users\\anaib\\Desktop\\MÁSTER\\TFM\\DatosUbicacion\\2017.csv",sep = ';')
+data2018_ubi <- read.csv("C:\\Users\\anaib\\Desktop\\MÁSTER\\TFM\\DatosUbicacion\\2018.csv",sep = ';')
+data2019_ubi <- read.csv("C:\\Users\\anaib\\Desktop\\MÁSTER\\TFM\\DatosUbicacion\\2019.csv",sep = ';')
+
+#Borramos identificadores redundantes.
+
+data2007$X <- NULL
+data2008$X <- NULL
+data2009$X <- NULL
+data2010$X <- NULL
+data2011$X <- NULL
+data2012$X <- NULL
+data2013$X <- NULL
+data2014$X <- NULL
+data2015$X <- NULL
+data2016$X <- NULL
+data2017$X <- NULL
+data2018$X <- NULL
+data2019$X <- NULL
+data2019$ï..ID1 <- NULL
+data2013_ubi$hhid<-NULL
+data2018_ubi$ï..HHID<-NULL
+data2019_ubi$ï..ID1<-NULL
+data2019_ubi$HHID<-NULL
+
+
+
+```
+
+<br>
+Eliminamos el espacio en blanco en el ID.
+
+```{r}
+
+data2007$ï..CASEID <-  str_replace_all(data2007$ï..CASEID," ","")
+data2008$CASEID <-  str_replace_all(data2008$CASEID," ","")
+data2009$ï..CASEID <-  str_replace_all(data2009$ï..CASEID," ","")
+data2010$ï..CASEID <-  str_replace_all(data2010$ï..CASEID," ","")
+data2011$ï..CASEID <-  str_replace_all(data2011$ï..CASEID," ","")
+data2012$ï..CASEID <-  str_replace_all(data2012$ï..CASEID," ","")
+data2013$ï..CASEID <-  str_replace_all(data2013$ï..CASEID," ","")
+data2014$ï..CASEID <-  str_replace_all(data2014$ï..CASEID," ","")
+data2015$ï..CASEID <-  str_replace_all(data2015$ï..CASEID," ","")
+data2016$ï..CASEID <-  str_replace_all(data2016$ï..CASEID," ","")
+data2017$ï..CASEID <-  str_replace_all(data2017$ï..CASEID," ","")
+data2018$ï..CASEID <-  str_replace_all(data2018$ï..CASEID," ","")
+data2019$CASEID <-  str_replace_all(data2019$CASEID," ","")
+
+
+
+data2007_ubi$ï..CASEID <-  str_replace_all(data2007_ubi$ï..CASEID," ","")
+data2008_ubi$ï..CASEID <-  str_replace_all(data2008_ubi$ï..CASEID," ","")
+data2009_ubi$ï..CASEID <-  str_replace_all(data2009_ubi$ï..CASEID," ","")
+data2010_ubi$ï..CASEID <-  str_replace_all(data2010_ubi$ï..CASEID," ","")
+data2011_ubi$ï..CASEID <-  str_replace_all(data2011_ubi$ï..CASEID," ","")
+data2012_ubi$ï..CASEID <-  str_replace_all(data2012_ubi$ï..CASEID," ","")
+data2013_ubi$ï..CASEID <-  str_replace_all(data2013_ubi$ï..CASEID," ","")
+data2014_ubi$ï..CASEID <-  str_replace_all(data2014_ubi$ï..CASEID," ","")
+data2015_ubi$ï..CASEID <-  str_replace_all(data2015_ubi$ï..CASEID," ","")
+data2016_ubi$ï..CASEID <-  str_replace_all(data2016_ubi$ï..CASEID," ","")
+data2017_ubi$ï..CASEID <-  str_replace_all(data2017_ubi$ï..CASEID," ","")
+data2018_ubi$CASEID <-  str_replace_all(data2018_ubi$CASEID," ","")
+data2019_ubi$CASEID <-  str_replace_all(data2019_ubi$CASEID," ","")
+
+colnames(data2008_ubi)[1]<-'CASEID'
+colnames(data2018)[1]<-'CASEID'
+
+
+```
+
+<br>
+A continuación describimos las variables que tenemos en cuenta en el dataset de ubicación.
+<br>
+
+- CASEID/ï..CASEID: identificador
+- V101: región
+- V102: tipo de lugar de residencia
+- v103: lugar de residencia de la infancia
+- v104: años vividos en el lugar de residencia
+- v106: nivel educativo más alto
+- v113: fuente de agua potable
+- v119: tiene electricidad
+- v122: tiene frigorífico
+
+<br>
+
+```{r}
+library(dplyr)
+
+data2007_ubi<- data2007_ubi %>% select(ï..CASEID,V101,V102,V103,V104,V106,V113,V119,V122)
+data2008_ubi<- data2008_ubi %>% select(CASEID,V101,V102,V103,V104,V106,V113,V119,V122)
+data2009_ubi<- data2009_ubi %>% select(ï..CASEID,V101,V102,V103,V104,V106,V113,V119,V122)
+data2010_ubi<- data2010_ubi %>% select(ï..CASEID,V101,V102,V103,V104,V106,V113,V119,V122)
+data2011_ubi<- data2011_ubi %>% select(ï..CASEID,V101,V102,V103,V104,V106,V113,V119,V122)
+data2012_ubi<- data2012_ubi %>% select(ï..CASEID,V101,V102,V103,V104,V106,V113,V119,V122)
+data2013_ubi<- data2013_ubi %>% select(ï..CASEID,V101,V102,V103,V104,V106,V113,V119,V122)
+data2014_ubi<- data2014_ubi %>% select(ï..CASEID,V101,V102,V103,V104,V106,V113,V119,V122)
+data2015_ubi<- data2015_ubi %>% select(ï..CASEID,V101,V102,V103,V104,V106,V113,V119,V122)
+data2016_ubi<- data2016_ubi %>% select(ï..CASEID,V101,V102,V103,V104,V106,V113,V119,V122)
+data2017_ubi<- data2017_ubi %>% select(ï..CASEID,V101,V102,V103,V104,V106,V113,V119,V122)
+data2018_ubi<- data2018_ubi %>% select(CASEID,V101,V102,V103,V104,V106,V113,V119,V122)
+data2019_ubi<- data2019_ubi %>% select(CASEID,V101,V102,V103,V104,V106,V113,V119,V122)
+
+```
+
+<br>
+Unimos ambos dataset por la variable 'CASEID'.
+
+<br>
+
+```{r}
+
+datos2007<-merge(x = data2007, y = data2007_ubi, by = c("ï..CASEID"))
+datos2008<-merge(x = data2008, y = data2008_ubi, by = c("CASEID"))
+datos2009<- merge(x=data2009,y = data2009_ubi,by = c("ï..CASEID"))
+datos2010<-merge(x = data2010, y = data2010_ubi, by = c("ï..CASEID"))
+datos2011<-merge(x = data2011, y = data2011_ubi, by = c("ï..CASEID"))
+datos2012<-merge(x = data2012, y = data2012_ubi, by = c("ï..CASEID"))
+datos2013<-merge(x = data2013, y = data2013_ubi, by = c("ï..CASEID"))
+datos2014<-merge(x = data2014, y = data2014_ubi, by = c("ï..CASEID"))
+datos2015<-merge(x = data2015, y = data2015_ubi, by = c("ï..CASEID"))
+datos2016<-merge(x = data2016, y = data2016_ubi, by = c("ï..CASEID"))
+datos2017<-merge(x = data2017, y = data2017_ubi, by = c("ï..CASEID"))
+datos2018<-merge(x = data2018, y = data2018_ubi, by = c("CASEID"))
+datos2019<-merge(x = data2019, y = data2019_ubi, by = c("CASEID"))
+```
+
+
+Como ambos dataset tienen filas diferentes, los añadimos usando el comando 'merge(-,-,all=TRUE)' para que rellene con NA las filas donde no hay un dato.
+
+<br>
+
+
+Transformarmos en numeric las variables HW2 y HW3. Antes, reemplazamos la coma que indica decimal por un punto, porque si no R no es capaz de procesarlo.
+
+```{r}
+datos2007$HW2 <-  str_replace_all(datos2007$HW2,",",".")
+datos2007$HW3 <-  str_replace_all(datos2007$HW3,",",".")
+
+datos2008$HW2 <-  str_replace_all(datos2008$HW2,",",".")
+datos2008$HW3 <-  str_replace_all(datos2008$HW3,",",".")
+
+datos2009$HW2 <-  str_replace_all(datos2009$HW2,",",".")
+datos2009$HW3 <-  str_replace_all(datos2009$HW3,",",".")
+
+datos2010$HW2 <-  str_replace_all(datos2010$HW2,",",".")
+datos2010$HW3 <-  str_replace_all(datos2010$HW3,",",".")
+
+datos2011$HW2 <-  str_replace_all(datos2011$HW2,",",".")
+datos2011$HW3 <-  str_replace_all(datos2011$HW3,",",".")
+
+datos2012$HW2 <-  str_replace_all(datos2012$HW2,",",".")
+datos2012$HW3 <-  str_replace_all(datos2012$HW3,",",".")
+
+datos2013$HW2 <-  str_replace_all(datos2013$HW2,",",".")
+datos2013$HW3 <-  str_replace_all(datos2013$HW3,",",".")
+
+datos2014$HW2 <-  str_replace_all(datos2014$HW2,",",".")
+datos2014$HW3 <-  str_replace_all(datos2014$HW3,",",".")
+
+datos2015$HW2 <-  str_replace_all(datos2015$HW2,",",".")
+datos2015$HW3 <-  str_replace_all(datos2015$HW3,",",".")
+
+datos2016$HW2 <-  str_replace_all(datos2016$HW2,",",".")
+datos2016$HW3 <-  str_replace_all(datos2016$HW3,",",".")
+
+datos2017$HW2 <-  str_replace_all(datos2017$HW2,",",".")
+datos2017$HW3 <-  str_replace_all(datos2017$HW3,",",".")
+
+datos2018$HW2 <-  str_replace_all(datos2018$HW2,",",".")
+datos2018$HW3 <-  str_replace_all(datos2018$HW3,",",".")
+
+datos2019$HW2 <-  str_replace_all(datos2019$HW2,",",".")
+datos2019$HW3 <-  str_replace_all(datos2019$HW3,",",".")
+```
+
+
+<br>
+
+```{r}
+datos2007$HW2 = as.numeric(datos2007$HW2)
+datos2007$HW3 = as.numeric(datos2007$HW3)
+
+datos2008$HW2 = as.numeric(datos2008$HW2)
+datos2008$HW3 = as.numeric(datos2008$HW3)
+datos2008$HW15 = as.numeric(datos2008$HW15)
+datos2008$HW51 = as.numeric(datos2008$HW51)
+datos2008$HW52 = as.numeric(datos2008$HW52)
+
+datos2009$HW2 = as.numeric(datos2009$HW2)
+datos2009$HW3 = as.numeric(datos2009$HW3)
+
+datos2010$HW2 = as.numeric(datos2010$HW2)
+datos2010$HW3 = as.numeric(datos2010$HW3)
+
+datos2011$HW2 = as.numeric(datos2011$HW2)
+datos2011$HW3 = as.numeric(datos2011$HW3)
+
+datos2012$HW2 = as.numeric(datos2012$HW2)
+datos2012$HW3 = as.numeric(datos2012$HW3)
+
+datos2013$HW2 = as.numeric(datos2013$HW2)
+datos2013$HW3 = as.numeric(datos2013$HW3)
+
+datos2014$HW2 = as.numeric(datos2014$HW2)
+datos2014$HW3 = as.numeric(datos2014$HW3)
+
+datos2015$HW2 = as.numeric(datos2015$HW2)
+datos2015$HW3 = as.numeric(datos2015$HW3)
+
+datos2016$HW2 = as.numeric(datos2016$HW2)
+datos2016$HW3 = as.numeric(datos2016$HW3)
+
+datos2017$HW2 = as.numeric(datos2017$HW2)
+datos2017$HW3 = as.numeric(datos2017$HW3)
+
+datos2018$HW2 = as.numeric(datos2018$HW2)
+datos2018$HW3 = as.numeric(datos2018$HW3)
+
+datos2019$HW2 = as.numeric(datos2019$HW2)
+datos2019$HW3 = as.numeric(datos2019$HW3)
+
+
+```
+
+La variable HW53 (nivel de anemia) está expresada en g/dl y lleva un decimal.Lo primero que hacemos para tratar esta variable es sustituir los valores 999 como valor faltante NA.
+
+```{r}
+
+datos2007$HW53[datos2007$HW53 == 999] <- NA
+datos2008$HW53[datos2008$HW53 == 999] <- NA
+datos2009$HW53[datos2009$HW53 == 999] <- NA
+datos2010$HW53[datos2010$HW53 == 999] <- NA
+datos2011$HW53[datos2011$HW53 == 999] <- NA
+datos2012$HW53[datos2012$HW53 == 999] <- NA
+datos2013$HW53[datos2013$HW53 == 999] <- NA
+datos2014$HW53[datos2014$HW53 == 999] <- NA
+datos2015$HW53[datos2015$HW53 == 999] <- NA
+datos2016$HW53[datos2016$HW53 == 999] <- NA
+datos2017$HW53[datos2017$HW53 == 999] <- NA
+datos2018$HW53[datos2018$HW53 == 999] <- NA
+datos2019$HW53[datos2019$HW53 == 999] <- NA
+
+```
+
+
+
+
+Vemos cuántos NA hemos introducido.
+
+
+```{r}
+sum(is.na(datos2007$HW53))
+sum(is.na(datos2008$HW53))
+sum(is.na(datos2009$HW53))
+sum(is.na(datos2010$HW53))
+sum(is.na(datos2011$HW53))
+sum(is.na(datos2012$HW53))
+sum(is.na(datos2013$HW53))
+sum(is.na(datos2014$HW53))
+sum(is.na(datos2015$HW53))
+sum(is.na(datos2016$HW53))
+sum(is.na(datos2017$HW53))
+sum(is.na(datos2018$HW53))
+sum(is.na(datos2019$HW53))
+
+
+```
+<br>
+
+Como los valores faltantes son relativamente pocos en comparación con el número de registros que tenemos y suponemos que estos missing son independientes con respecto al resto de información y que aparecen de forma aleatoria, los sustituímos por el valor medio.
+<br>
+
+```{r}
+mean2007_hw53 <- round(mean(datos2007$HW53,na.rm = TRUE),2)
+datos2007$HW53[is.na(datos2007$HW53)] <- mean2007_hw53
+
+mean2008_hw53 <- round(mean(datos2008$HW53,na.rm = TRUE),2)
+datos2008$HW53[is.na(datos2008$HW53)] <- mean2008_hw53
+
+mean2009_hw53 <- round(mean(datos2009$HW53,na.rm = TRUE),2)
+datos2009$HW53[is.na(datos2009$HW53)] <- mean2009_hw53
+
+mean2010_hw53 <- round(mean(datos2010$HW53,na.rm = TRUE),2)
+datos2010$HW53[is.na(datos2010$HW53)] <- mean2010_hw53
+
+mean2011_hw53 <- round(mean(datos2011$HW53,na.rm = TRUE),2)
+datos2011$HW53[is.na(datos2011$HW53)] <- mean2011_hw53
+
+mean2012_hw53 <- round(mean(datos2012$HW53,na.rm = TRUE),2)
+datos2012$HW53[is.na(datos2012$HW53)] <- mean2012_hw53
+
+mean2013_hw53 <- round(mean(datos2013$HW53,na.rm = TRUE),2)
+datos2013$HW53[is.na(datos2013$HW53)] <- mean2013_hw53
+
+mean2014_hw53 <- round(mean(datos2014$HW53,na.rm = TRUE),2)
+datos2014$HW53[is.na(datos2014$HW53)] <- mean2014_hw53
+
+mean2015_hw53 <- round(mean(datos2015$HW53,na.rm = TRUE),2)
+datos2015$HW53[is.na(datos2015$HW53)] <- mean2015_hw53
+
+mean2016_hw53 <- round(mean(datos2016$HW53,na.rm = TRUE),2)
+datos2016$HW53[is.na(datos2016$HW53)] <- mean2016_hw53
+
+mean2017_hw53 <- round(mean(datos2017$HW53,na.rm = TRUE),2)
+datos2017$HW53[is.na(datos2017$HW53)] <- mean2017_hw53
+
+mean2018_hw53 <- round(mean(datos2018$HW53,na.rm = TRUE),2)
+datos2018$HW53[is.na(datos2018$HW53)] <- mean2018_hw53
+
+mean2019_hw53 <- round(mean(datos2019$HW53,na.rm = TRUE),2)
+datos2019$HW53[is.na(datos2019$HW53)] <- mean2019_hw53
+
+```
+
+Dividimos este valor entre 10 para corregir la escala.
+
+<br>
+```{r}
+datos2007$HW53<- datos2007$HW53/10
+datos2008$HW53<- datos2008$HW53/10
+datos2009$HW53<- datos2009$HW53/10
+datos2010$HW53<- datos2010$HW53/10
+datos2011$HW53<- datos2011$HW53/10
+datos2012$HW53<- datos2012$HW53/10
+datos2013$HW53<- datos2013$HW53/10
+datos2014$HW53<- datos2014$HW53/10
+datos2015$HW53<- datos2015$HW53/10
+datos2016$HW53<- datos2016$HW53/10
+datos2017$HW53<- datos2017$HW53/10
+datos2018$HW53<- datos2018$HW53/10
+datos2019$HW53<- datos2019$HW53/10
+
+```
+
+Cambiamos los valores '9','99','999','9999' O '99999' por NA en todas las variables
+<br>
+```{r}
+datos2007$HW2[datos2007$HW2 == 99.9] <- NA
+datos2008$HW2[datos2008$HW2 == 99.9] <- NA
+datos2009$HW2[datos2009$HW2 == 99.9] <- NA
+datos2010$HW2[datos2010$HW2 == 99.9] <- NA
+datos2011$HW2[datos2011$HW2 == 99.9] <- NA
+datos2012$HW2[datos2012$HW2 == 99.9] <- NA
+datos2013$HW2[datos2013$HW2 == 99.9] <- NA
+datos2014$HW2[datos2014$HW2 == 99.9] <- NA
+datos2015$HW2[datos2015$Hw2 == 99.9] <- NA
+datos2016$HW2[datos2016$HW2 == 99.9] <- NA
+datos2017$HW2[datos2017$HW2 == 99.9] <- NA
+datos2018$HW2[datos2018$HW2 == 99.9] <- NA
+datos2019$HW2[datos2019$HW2 == 99.9] <- NA
+
+
+datos2007$HW3[datos2007$HW3 == 999.9] <- NA
+datos2008$HW3[datos2008$HW3 == 999.9] <- NA
+datos2009$HW3[datos2009$HW3 == 999.9] <- NA
+datos2010$HW3[datos2010$HW3 == 999.9] <- NA
+datos2011$HW3[datos2011$HW3 == 999.9] <- NA
+datos2012$HW3[datos2012$HW3 == 999.9] <- NA
+datos2013$HW3[datos2013$HW3 == 999.9] <- NA
+datos2014$HW3[datos2014$HW3 == 999.9] <- NA
+datos2015$HW3[datos2015$HW3 == 999.9] <- NA
+datos2016$HW3[datos2016$HW3 == 999.9] <- NA
+datos2017$HW3[datos2017$HW3 == 999.9] <- NA
+datos2018$HW3[datos2018$HW3 == 999.9] <- NA
+datos2019$HW3[datos2019$HW3 == 999.9] <- NA
+
+
+
+
+datos2007[datos2007 == 9] <- NA
+datos2007[datos2007 == 99] <- NA
+datos2007[datos2007 == 999] <- NA
+datos2007[datos2007 == 9999] <- NA
+datos2007[datos2007 == 99999] <- NA
+
+datos2008[datos2008 == 9] <- NA
+datos2008[datos2008 == 99] <- NA
+datos2008[datos2008 == 999] <- NA
+datos2008[datos2008 == 9999] <- NA
+datos2008[datos2008 == 99999] <- NA
+
+datos2009[datos2009 == 9] <- NA
+datos2009[datos2009 == 99] <- NA
+datos2009[datos2009 == 999] <- NA
+datos2009[datos2009 == 9999] <- NA
+datos2009[datos2009 == 99999] <- NA
+
+datos2010[datos2010 == 9] <- NA
+datos2010[datos2010 == 99] <- NA
+datos2010[datos2010 == 999] <- NA
+datos2010[datos2010 == 9999] <- NA
+datos2010[datos2010 == 99999] <- NA
+
+datos2011[datos2011 == 9] <- NA
+datos2011[datos2011 == 99] <- NA
+datos2011[datos2011 == 999] <- NA
+datos2011[datos2011 == 9999] <- NA
+datos2011[datos2011 == 99999] <- NA
+
+datos2012[datos2012 == 9] <- NA
+datos2012[datos2012 == 99] <- NA
+datos2012[datos2012 == 999] <- NA
+datos2012[datos2012 == 9999] <- NA
+datos2012[datos2012 == 99999] <- NA
+
+datos2013[datos2013 == 9] <- NA
+datos2013[datos2013 == 99] <- NA
+datos2013[datos2013 == 999] <- NA
+datos2013[datos2013 == 9999] <- NA
+datos2013[datos2013 == 99999] <- NA
+
+datos2014[datos2014 == 9] <- NA
+datos2014[datos2014 == 99] <- NA
+datos2014[datos2014 == 999] <- NA
+datos2014[datos2014 == 9999] <- NA
+datos2014[datos2014 == 99999] <- NA
+
+datos2015[datos2015 == 9] <- NA
+datos2015[datos2015 == 99] <- NA
+datos2015[datos2015 == 999] <- NA
+datos2015[datos2015 == 9999] <- NA
+datos2015[datos2015 == 99999] <- NA
+
+
+datos2016[datos2016 == 9] <- NA
+datos2016[datos2016 == 99] <- NA
+datos2016[datos2016 == 999] <- NA
+datos2016[datos2016 == 9999] <- NA
+datos2016[datos2016 == 99999] <- NA
+
+datos2017[datos2017 == 9] <- NA
+datos2017[datos2017 == 99] <- NA
+datos2017[datos2017 == 999] <- NA
+datos2017[datos2017 == 9999] <- NA
+datos2017[datos2017 == 99999] <- NA
+
+datos2018[datos2018 == 9] <- NA
+datos2018[datos2018 == 99] <- NA
+datos2018[datos2018 == 999] <- NA
+datos2018[datos2018 == 9999] <- NA
+datos2018[datos2018 == 99999] <- NA
+
+datos2019[datos2019 == 9] <- NA
+datos2019[datos2019 == 99] <- NA
+datos2019[datos2019 == 999] <- NA
+datos2019[datos2019 == 9999] <- NA
+datos2019[datos2019 == 99999] <- NA
+
+
+```
+
+<br>
+Calculamos la media de las columnas de un año en concreto ( los valores de todos los años son similares, por eso, elegimos el año 2016) y sustituimos los valores NA por ese valor.
+<br>
+
+```{r}
+#HW1
+meanhw1_2016 <- round(mean(datos2016$HW1,na.rm = TRUE),2)
+
+datos2007$HW1[is.na(datos2007$HW1)] <- meanhw1_2016
+datos2008$HW1[is.na(datos2008$HW1)] <- meanhw1_2016
+datos2009$HW1[is.na(datos2009$HW1)] <- meanhw1_2016
+datos2010$HW1[is.na(datos2010$HW1)] <- meanhw1_2016
+datos2011$HW1[is.na(datos2011$HW1)] <- meanhw1_2016
+datos2012$HW1[is.na(datos2012$HW1)] <- meanhw1_2016
+datos2013$HW1[is.na(datos2013$HW1)] <- meanhw1_2016
+datos2014$HW1[is.na(datos2014$HW1)] <- meanhw1_2016
+datos2015$HW1[is.na(datos2015$HW1)] <- meanhw1_2016
+datos2016$HW1[is.na(datos2016$HW1)] <- meanhw1_2016
+datos2017$HW1[is.na(datos2017$HW1)] <- meanhw1_2016
+datos2018$HW1[is.na(datos2018$HW1)] <- meanhw1_2016
+datos2019$HW1[is.na(datos2019$HW1)] <- meanhw1_2016
+
+#HW2
+
+meanhw2_2016 <- round(mean(datos2016$HW2,na.rm = TRUE),2)
+
+datos2007$HW2[is.na(datos2007$HW2)] <- meanhw2_2016
+datos2008$HW2[is.na(datos2008$HW2)] <- meanhw2_2016
+datos2009$HW2[is.na(datos2009$HW2)] <- meanhw2_2016
+datos2010$HW2[is.na(datos2010$HW2)] <- meanhw2_2016
+datos2011$HW2[is.na(datos2011$HW2)] <- meanhw2_2016
+datos2012$HW2[is.na(datos2012$HW2)] <- meanhw2_2016
+datos2013$HW2[is.na(datos2013$HW2)] <- meanhw2_2016
+datos2014$HW2[is.na(datos2014$HW2)] <- meanhw2_2016
+datos2015$HW2[is.na(datos2015$HW2)] <- meanhw2_2016
+datos2016$HW2[is.na(datos2016$HW2)] <- meanhw2_2016
+datos2017$HW2[is.na(datos2017$HW2)] <- meanhw2_2016
+datos2018$HW2[is.na(datos2018$HW2)] <- meanhw2_2016
+datos2019$HW2[is.na(datos2019$HW2)] <- meanhw2_2016
+
+#HW3
+
+meanhw3_2016 <- round(mean(datos2016$HW3,na.rm = TRUE),2)
+
+datos2007$HW3[is.na(datos2007$HW3)] <- meanhw3_2016
+datos2008$HW3[is.na(datos2008$HW3)] <- meanhw3_2016
+datos2009$HW3[is.na(datos2009$HW3)] <- meanhw3_2016
+datos2010$HW3[is.na(datos2010$HW3)] <- meanhw3_2016
+datos2011$HW3[is.na(datos2011$HW3)] <- meanhw3_2016
+datos2012$HW3[is.na(datos2012$HW3)] <- meanhw3_2016
+datos2013$HW3[is.na(datos2013$HW3)] <- meanhw3_2016
+datos2014$HW3[is.na(datos2014$HW3)] <- meanhw3_2016
+datos2015$HW3[is.na(datos2015$HW3)] <- meanhw3_2016
+datos2016$HW3[is.na(datos2016$HW3)] <- meanhw3_2016
+datos2017$HW3[is.na(datos2017$HW3)] <- meanhw3_2016
+datos2018$HW3[is.na(datos2018$HW3)] <- meanhw3_2016
+datos2019$HW3[is.na(datos2019$HW3)] <- meanhw3_2016
+
+#HW4
+
+meanhw4_2016 <- round(mean(datos2016$HW4,na.rm = TRUE),2)
+
+datos2007$HW4[is.na(datos2007$HW4)] <- meanhw4_2016
+datos2008$HW4[is.na(datos2008$HW4)] <- meanhw4_2016
+datos2009$HW4[is.na(datos2009$HW4)] <- meanhw4_2016
+datos2010$HW4[is.na(datos2010$HW4)] <- meanhw4_2016
+datos2011$HW4[is.na(datos2011$HW4)] <- meanhw4_2016
+datos2012$HW4[is.na(datos2012$HW4)] <- meanhw4_2016
+datos2013$HW4[is.na(datos2013$HW4)] <- meanhw4_2016
+datos2014$HW4[is.na(datos2014$HW4)] <- meanhw4_2016
+datos2015$HW4[is.na(datos2015$HW4)] <- meanhw4_2016
+datos2016$HW4[is.na(datos2016$HW4)] <- meanhw4_2016
+datos2017$HW4[is.na(datos2017$HW4)] <- meanhw4_2016
+datos2018$HW4[is.na(datos2018$HW4)] <- meanhw4_2016
+datos2019$HW4[is.na(datos2019$HW4)] <- meanhw4_2016
+
+#HW5
+
+meanhw5_2016 <- round(mean(datos2016$HW5,na.rm = TRUE),2)
+
+datos2007$HW5[is.na(datos2007$HW5)] <- meanhw5_2016
+datos2008$HW5[is.na(datos2008$HW5)] <- meanhw5_2016
+datos2009$HW5[is.na(datos2009$HW5)] <- meanhw5_2016
+datos2010$HW5[is.na(datos2010$HW5)] <- meanhw5_2016
+datos2011$HW5[is.na(datos2011$HW5)] <- meanhw5_2016
+datos2012$HW5[is.na(datos2012$HW5)] <- meanhw5_2016
+datos2013$HW5[is.na(datos2013$HW5)] <- meanhw5_2016
+datos2014$HW5[is.na(datos2014$HW5)] <- meanhw5_2016
+datos2015$HW5[is.na(datos2015$HW5)] <- meanhw5_2016
+datos2016$HW5[is.na(datos2016$HW5)] <- meanhw5_2016
+datos2017$HW5[is.na(datos2017$HW5)] <- meanhw5_2016
+datos2018$HW5[is.na(datos2018$HW5)] <- meanhw5_2016
+datos2019$HW5[is.na(datos2019$HW5)] <- meanhw5_2016
+
+
+#HW6
+
+meanhw6_2016 <- round(mean(datos2016$HW6,na.rm = TRUE),2)
+
+datos2007$HW6[is.na(datos2007$HW6)] <- meanhw6_2016
+datos2008$HW6[is.na(datos2008$HW6)] <- meanhw6_2016
+datos2009$HW6[is.na(datos2009$HW6)] <- meanhw6_2016
+datos2010$HW6[is.na(datos2010$HW6)] <- meanhw6_2016
+datos2011$HW6[is.na(datos2011$HW6)] <- meanhw6_2016
+datos2012$HW6[is.na(datos2012$HW6)] <- meanhw6_2016
+datos2013$HW6[is.na(datos2013$HW6)] <- meanhw6_2016
+datos2014$HW6[is.na(datos2014$HW6)] <- meanhw6_2016
+datos2015$HW6[is.na(datos2015$HW6)] <- meanhw6_2016
+datos2016$HW6[is.na(datos2016$HW6)] <- meanhw6_2016
+datos2017$HW6[is.na(datos2017$HW6)] <- meanhw6_2016
+datos2018$HW6[is.na(datos2018$HW6)] <- meanhw6_2016
+datos2019$HW6[is.na(datos2019$HW6)] <- meanhw6_2016
+
+#HW7
+
+meanhw7_2016 <- round(mean(datos2016$HW7,na.rm = TRUE),2)
+
+datos2007$HW7[is.na(datos2007$HW7)] <- meanhw7_2016
+datos2008$HW7[is.na(datos2008$HW7)] <- meanhw7_2016
+datos2009$HW7[is.na(datos2009$HW7)] <- meanhw7_2016
+datos2010$HW7[is.na(datos2010$HW7)] <- meanhw7_2016
+datos2011$HW7[is.na(datos2011$HW7)] <- meanhw7_2016
+datos2012$HW7[is.na(datos2012$HW7)] <- meanhw7_2016
+datos2013$HW7[is.na(datos2013$HW7)] <- meanhw7_2016
+datos2014$HW7[is.na(datos2014$HW7)] <- meanhw7_2016
+datos2015$HW7[is.na(datos2015$HW7)] <- meanhw7_2016
+datos2016$HW7[is.na(datos2016$HW7)] <- meanhw7_2016
+datos2017$HW7[is.na(datos2017$HW7)] <- meanhw7_2016
+datos2018$HW7[is.na(datos2018$HW7)] <- meanhw7_2016
+datos2019$HW7[is.na(datos2019$HW7)] <- meanhw7_2016
+
+#HW8
+
+meanhw8_2016 <- round(mean(datos2016$HW8,na.rm = TRUE),2)
+
+datos2007$HW8[is.na(datos2007$HW8)] <- meanhw8_2016
+datos2008$HW8[is.na(datos2008$HW8)] <- meanhw8_2016
+datos2009$HW8[is.na(datos2009$HW8)] <- meanhw8_2016
+datos2010$HW8[is.na(datos2010$HW8)] <- meanhw8_2016
+datos2011$HW8[is.na(datos2011$HW8)] <- meanhw8_2016
+datos2012$HW8[is.na(datos2012$HW8)] <- meanhw8_2016
+datos2013$HW8[is.na(datos2013$HW8)] <- meanhw8_2016
+datos2014$HW8[is.na(datos2014$HW8)] <- meanhw8_2016
+datos2015$HW8[is.na(datos2015$HW8)] <- meanhw8_2016
+datos2016$HW8[is.na(datos2016$HW8)] <- meanhw8_2016
+datos2017$HW8[is.na(datos2017$HW8)] <- meanhw8_2016
+datos2018$HW8[is.na(datos2018$HW8)] <- meanhw8_2016
+datos2019$HW8[is.na(datos2019$HW8)] <- meanhw8_2016
+
+#HW9
+meanhw9_2016 <- round(mean(datos2016$HW9,na.rm = TRUE),2)
+
+datos2007$HW9[is.na(datos2007$HW9)] <- meanhw9_2016
+datos2008$HW9[is.na(datos2008$HW9)] <- meanhw9_2016
+datos2009$HW9[is.na(datos2009$HW9)] <- meanhw9_2016
+datos2010$HW9[is.na(datos2010$HW9)] <- meanhw9_2016
+datos2011$HW9[is.na(datos2011$HW9)] <- meanhw9_2016
+datos2012$HW9[is.na(datos2012$HW9)] <- meanhw9_2016
+datos2013$HW9[is.na(datos2013$HW9)] <- meanhw9_2016
+datos2014$HW9[is.na(datos2014$HW9)] <- meanhw9_2016
+datos2015$HW9[is.na(datos2015$HW9)] <- meanhw9_2016
+datos2016$HW9[is.na(datos2016$HW9)] <- meanhw9_2016
+datos2017$HW9[is.na(datos2017$HW9)] <- meanhw9_2016
+datos2018$HW9[is.na(datos2018$HW9)] <- meanhw9_2016
+datos2019$HW9[is.na(datos2019$HW9)] <- meanhw9_2016
+
+#hw10
+
+meanhw10_2016 <- round(mean(datos2016$HW10,na.rm = TRUE),2)
+
+datos2007$HW10[is.na(datos2007$HW10)] <- meanhw10_2016
+datos2008$HW10[is.na(datos2008$HW10)] <- meanhw10_2016
+datos2009$HW10[is.na(datos2009$HW10)] <- meanhw10_2016
+datos2010$HW10[is.na(datos2010$HW10)] <- meanhw10_2016
+datos2011$HW10[is.na(datos2011$HW10)] <- meanhw10_2016
+datos2012$HW10[is.na(datos2012$HW10)] <- meanhw10_2016
+datos2013$HW10[is.na(datos2013$HW10)] <- meanhw10_2016
+datos2014$HW10[is.na(datos2014$HW10)] <- meanhw10_2016
+datos2015$HW10[is.na(datos2015$HW10)] <- meanhw10_2016
+datos2016$HW10[is.na(datos2016$HW10)] <- meanhw10_2016
+datos2017$HW10[is.na(datos2017$HW10)] <- meanhw10_2016
+datos2018$HW10[is.na(datos2018$HW10)] <- meanhw10_2016
+datos2019$HW10[is.na(datos2019$HW10)] <- meanhw10_2016
+
+#HW11
+
+meanhw11_2016 <- round(mean(datos2016$HW11,na.rm = TRUE),2)
+
+datos2007$HW11[is.na(datos2007$HW11)] <- meanhw11_2016
+datos2008$HW11[is.na(datos2008$HW11)] <- meanhw11_2016
+datos2009$HW11[is.na(datos2009$HW11)] <- meanhw11_2016
+datos2010$HW11[is.na(datos2010$HW11)] <- meanhw11_2016
+datos2011$HW11[is.na(datos2011$HW11)] <- meanhw11_2016
+datos2012$HW11[is.na(datos2012$HW11)] <- meanhw11_2016
+datos2013$HW11[is.na(datos2013$HW11)] <- meanhw11_2016
+datos2014$HW11[is.na(datos2014$HW11)] <- meanhw11_2016
+datos2015$HW11[is.na(datos2015$HW11)] <- meanhw11_2016
+datos2016$HW11[is.na(datos2016$HW11)] <- meanhw11_2016
+datos2017$HW11[is.na(datos2017$HW11)] <- meanhw11_2016
+datos2018$HW11[is.na(datos2018$HW11)] <- meanhw11_2016
+datos2019$HW11[is.na(datos2019$HW11)] <- meanhw11_2016
+
+#HW12
+
+meanhw12_2016 <- round(mean(datos2016$HW12,na.rm = TRUE),2)
+
+datos2007$HW12[is.na(datos2007$HW12)] <- meanhw12_2016
+datos2008$HW12[is.na(datos2008$HW12)] <- meanhw12_2016
+datos2009$HW12[is.na(datos2009$HW12)] <- meanhw12_2016
+datos2010$HW12[is.na(datos2010$HW12)] <- meanhw12_2016
+datos2011$HW12[is.na(datos2011$HW12)] <- meanhw12_2016
+datos2012$HW12[is.na(datos2012$HW12)] <- meanhw12_2016
+datos2013$HW12[is.na(datos2013$HW12)] <- meanhw12_2016
+datos2014$HW12[is.na(datos2014$HW12)] <- meanhw12_2016
+datos2015$HW12[is.na(datos2015$HW12)] <- meanhw12_2016
+datos2016$HW12[is.na(datos2016$HW12)] <- meanhw12_2016
+datos2017$HW12[is.na(datos2017$HW12)] <- meanhw12_2016
+datos2018$HW12[is.na(datos2018$HW12)] <- meanhw12_2016
+datos2019$HW12[is.na(datos2019$HW12)] <- meanhw12_2016
+
+#HW13
+
+meanhw13_2016 <- round(mean(datos2016$HW13,na.rm = TRUE),2)
+
+datos2007$HW13[is.na(datos2007$HW13)] <- meanhw13_2016
+datos2008$HW13[is.na(datos2008$HW13)] <- meanhw13_2016
+datos2009$HW13[is.na(datos2009$HW13)] <- meanhw13_2016
+datos2010$HW13[is.na(datos2010$HW13)] <- meanhw13_2016
+datos2011$HW13[is.na(datos2011$HW13)] <- meanhw13_2016
+datos2012$HW13[is.na(datos2012$HW13)] <- meanhw13_2016
+datos2013$HW13[is.na(datos2013$HW13)] <- meanhw13_2016
+datos2014$HW13[is.na(datos2014$HW13)] <- meanhw13_2016
+datos2015$HW13[is.na(datos2015$HW13)] <- meanhw13_2016
+datos2016$HW13[is.na(datos2016$HW13)] <- meanhw13_2016
+datos2017$HW13[is.na(datos2017$HW13)] <- meanhw13_2016
+datos2018$HW13[is.na(datos2018$HW13)] <- meanhw13_2016
+datos2019$HW13[is.na(datos2019$HW13)] <- meanhw13_2016
+
+#HW15
+
+meanhw15_2016 <- round(mean(datos2016$HW15,na.rm = TRUE),2)
+
+datos2007$HW15[is.na(datos2007$HW15)] <- meanhw15_2016
+datos2008$HW15[is.na(datos2008$HW15)] <- meanhw15_2016
+datos2009$HW15[is.na(datos2009$HW15)] <- meanhw15_2016
+datos2010$HW15[is.na(datos2010$HW15)] <- meanhw15_2016
+datos2011$HW15[is.na(datos2011$HW15)] <- meanhw15_2016
+datos2012$HW15[is.na(datos2012$HW15)] <- meanhw15_2016
+datos2013$HW15[is.na(datos2013$HW15)] <- meanhw15_2016
+datos2014$HW15[is.na(datos2014$HW15)] <- meanhw15_2016
+datos2015$HW15[is.na(datos2015$HW15)] <- meanhw15_2016
+datos2016$HW15[is.na(datos2016$HW15)] <- meanhw15_2016
+datos2017$HW15[is.na(datos2017$HW15)] <- meanhw15_2016
+datos2018$HW15[is.na(datos2018$HW15)] <- meanhw15_2016
+datos2019$HW15[is.na(datos2019$HW15)] <- meanhw15_2016
+
+#HW16
+
+meanhw16_2016 <- round(median(datos2016$HW16,na.rm = TRUE),2)
+
+datos2007$HW16[is.na(datos2007$HW16)] <- meanhw16_2016
+datos2008$HW16[is.na(datos2008$HW16)] <- meanhw16_2016
+datos2009$HW16[is.na(datos2009$HW16)] <- meanhw16_2016
+datos2010$HW16[is.na(datos2010$HW16)] <- meanhw16_2016
+datos2011$HW16[is.na(datos2011$HW16)] <- meanhw16_2016
+datos2012$HW16[is.na(datos2012$HW16)] <- meanhw16_2016
+datos2013$HW16[is.na(datos2013$HW16)] <- meanhw16_2016
+datos2014$HW16[is.na(datos2014$HW16)] <- meanhw16_2016
+datos2015$HW16[is.na(datos2015$HW16)] <- meanhw16_2016
+datos2016$HW16[is.na(datos2016$HW16)] <- meanhw16_2016
+datos2017$HW16[is.na(datos2017$HW16)] <- meanhw16_2016
+datos2018$HW16[is.na(datos2018$HW16)] <- meanhw16_2016
+datos2019$HW16[is.na(datos2019$HW16)] <- meanhw16_2016
+
+#HW17
+meanhw17_2016 <- round(median(datos2016$HW17,na.rm = TRUE),0)
+
+datos2007$HW17[is.na(datos2007$HW17)] <- meanhw17_2016
+datos2008$HW17[is.na(datos2008$HW17)] <- meanhw17_2016
+datos2009$HW17[is.na(datos2009$HW17)] <- meanhw17_2016
+datos2010$HW17[is.na(datos2010$HW17)] <- meanhw17_2016
+datos2011$HW17[is.na(datos2011$HW17)] <- meanhw17_2016
+datos2012$HW17[is.na(datos2012$HW17)] <- meanhw17_2016
+datos2013$HW17[is.na(datos2013$HW17)] <- meanhw17_2016
+datos2014$HW17[is.na(datos2014$HW17)] <- meanhw17_2016
+datos2015$HW17[is.na(datos2015$HW17)] <- meanhw17_2016
+datos2016$HW17[is.na(datos2016$HW17)] <- meanhw17_2016
+datos2017$HW17[is.na(datos2017$HW17)] <- meanhw17_2016
+datos2018$HW17[is.na(datos2018$HW17)] <- meanhw17_2016
+datos2019$HW17[is.na(datos2019$HW17)] <- meanhw17_2016
+
+#HW18
+
+meanhw18_2016 <- round(median(datos2016$HW18,na.rm = TRUE),0)
+
+datos2007$HW18[is.na(datos2007$HW18)] <- meanhw18_2016
+datos2008$HW18[is.na(datos2008$HW18)] <- meanhw18_2016
+datos2009$HW18[is.na(datos2009$HW18)] <- meanhw18_2016
+datos2010$HW18[is.na(datos2010$HW18)] <- meanhw18_2016
+datos2011$HW18[is.na(datos2011$HW18)] <- meanhw18_2016
+datos2012$HW18[is.na(datos2012$HW18)] <- meanhw18_2016
+datos2013$HW18[is.na(datos2013$HW18)] <- meanhw18_2016
+datos2014$HW18[is.na(datos2014$HW18)] <- meanhw18_2016
+datos2015$HW18[is.na(datos2015$HW18)] <- meanhw18_2016
+datos2016$HW18[is.na(datos2016$HW18)] <- meanhw18_2016
+datos2017$HW18[is.na(datos2017$HW18)] <- meanhw18_2016
+datos2018$HW18[is.na(datos2018$HW18)] <- meanhw18_2016
+datos2019$HW18[is.na(datos2019$HW18)] <- meanhw18_2016
+
+
+#HW51
+
+meanhw51_2016 <- round(median(datos2016$HW51,na.rm = TRUE),2)
+
+datos2007$HW51[is.na(datos2007$HW51)] <- meanhw51_2016
+datos2008$HW51[is.na(datos2008$HW51)] <- meanhw51_2016
+datos2009$HW51[is.na(datos2009$HW51)] <- meanhw51_2016
+datos2010$HW51[is.na(datos2010$HW51)] <- meanhw51_2016
+datos2011$HW51[is.na(datos2011$HW51)] <- meanhw51_2016
+datos2012$HW51[is.na(datos2012$HW51)] <- meanhw51_2016
+datos2013$HW51[is.na(datos2013$HW51)] <- meanhw51_2016
+datos2014$HW51[is.na(datos2014$HW51)] <- meanhw51_2016
+datos2015$HW51[is.na(datos2015$HW51)] <- meanhw51_2016
+datos2016$HW51[is.na(datos2016$HW51)] <- meanhw51_2016
+datos2017$HW51[is.na(datos2017$HW51)] <- meanhw51_2016
+datos2018$HW51[is.na(datos2018$HW51)] <- meanhw51_2016
+datos2019$HW51[is.na(datos2019$HW51)] <- meanhw51_2016
+
+#HW52
+
+meanhw52_2016 <- round(median(datos2016$HW52,na.rm = TRUE),2)
+
+datos2007$HW52[is.na(datos2007$HW52)] <- meanhw52_2016
+datos2008$HW52[is.na(datos2008$HW52)] <- meanhw52_2016
+datos2009$HW52[is.na(datos2009$HW52)] <- meanhw52_2016
+datos2010$HW52[is.na(datos2010$HW52)] <- meanhw52_2016
+datos2011$HW52[is.na(datos2011$HW52)] <- meanhw52_2016
+datos2012$HW52[is.na(datos2012$HW52)] <- meanhw52_2016
+datos2013$HW52[is.na(datos2013$HW52)] <- meanhw52_2016
+datos2014$HW52[is.na(datos2014$HW52)] <- meanhw52_2016
+datos2015$HW52[is.na(datos2015$HW52)] <- meanhw52_2016
+datos2016$HW52[is.na(datos2016$HW52)] <- meanhw52_2016
+datos2017$HW52[is.na(datos2017$HW52)] <- meanhw52_2016
+datos2018$HW52[is.na(datos2018$HW52)] <- meanhw52_2016
+datos2019$HW52[is.na(datos2019$HW52)] <- meanhw52_2016
+
+#HW53
+meanhw53_2016 <- round(mean(datos2016$HW53,na.rm = TRUE),2)
+
+datos2007$HW53[is.na(datos2007$HW53)] <- meanhw53_2016
+datos2008$HW53[is.na(datos2008$HW53)] <- meanhw53_2016
+datos2009$HW53[is.na(datos2009$HW53)] <- meanhw53_2016
+datos2010$HW53[is.na(datos2010$HW53)] <- meanhw53_2016
+datos2011$HW53[is.na(datos2011$HW53)] <- meanhw53_2016
+datos2012$HW53[is.na(datos2012$HW53)] <- meanhw53_2016
+datos2013$HW53[is.na(datos2013$HW53)] <- meanhw53_2016
+datos2014$HW53[is.na(datos2014$HW53)] <- meanhw53_2016
+datos2015$HW53[is.na(datos2015$HW53)] <- meanhw53_2016
+datos2016$HW53[is.na(datos2016$HW53)] <- meanhw53_2016
+datos2017$HW53[is.na(datos2017$HW53)] <- meanhw53_2016
+datos2018$HW53[is.na(datos2018$HW53)] <- meanhw53_2016
+datos2019$HW53[is.na(datos2019$HW53)] <- meanhw53_2016
+
+#HW55
+
+meanhw55_2016 <- round(median(datos2016$HW55,na.rm = TRUE),2)
+
+datos2007$HW55[is.na(datos2007$HW55)] <- meanhw55_2016
+datos2008$HW55[is.na(datos2008$HW55)] <- meanhw55_2016
+datos2009$HW55[is.na(datos2009$HW55)] <- meanhw55_2016
+datos2010$HW55[is.na(datos2010$HW55)] <- meanhw55_2016
+datos2011$HW55[is.na(datos2011$HW55)] <- meanhw55_2016
+datos2012$HW55[is.na(datos2012$HW55)] <- meanhw55_2016
+datos2013$HW55[is.na(datos2013$HW55)] <- meanhw55_2016
+datos2014$HW55[is.na(datos2014$HW55)] <- meanhw55_2016
+datos2015$HW55[is.na(datos2015$HW55)] <- meanhw55_2016
+datos2016$HW55[is.na(datos2016$HW55)] <- meanhw55_2016
+datos2017$HW55[is.na(datos2017$HW55)] <- meanhw55_2016
+datos2018$HW55[is.na(datos2018$HW55)] <- meanhw55_2016
+datos2019$HW55[is.na(datos2019$HW55)] <- meanhw55_2016
+
+#HW56
+
+meanhw56_2016 <- round(mean(datos2016$HW56,na.rm = TRUE),2)
+
+datos2007$HW56[is.na(datos2007$HW56)] <- meanhw56_2016
+datos2008$HW56[is.na(datos2008$HW56)] <- meanhw56_2016
+datos2009$HW56[is.na(datos2009$HW56)] <- meanhw56_2016
+datos2010$HW56[is.na(datos2010$HW56)] <- meanhw56_2016
+datos2011$HW56[is.na(datos2011$HW56)] <- meanhw56_2016
+datos2012$HW56[is.na(datos2012$HW56)] <- meanhw56_2016
+datos2013$HW56[is.na(datos2013$HW56)] <- meanhw56_2016
+datos2014$HW56[is.na(datos2014$HW56)] <- meanhw56_2016
+datos2015$HW56[is.na(datos2015$HW56)] <- meanhw56_2016
+datos2016$HW56[is.na(datos2016$HW56)] <- meanhw56_2016
+datos2017$HW56[is.na(datos2017$HW56)] <- meanhw56_2016
+datos2018$HW56[is.na(datos2018$HW56)] <- meanhw56_2016
+datos2019$HW56[is.na(datos2019$HW56)] <- meanhw56_2016
+
+#HW57
+
+meanhw57_2016 <- round(median(datos2016$HW57,na.rm = TRUE),2)
+
+datos2007$HW57[is.na(datos2007$HW57)] <- meanhw57_2016
+datos2008$HW57[is.na(datos2008$HW57)] <- meanhw57_2016
+datos2009$HW57[is.na(datos2009$HW57)] <- meanhw57_2016
+datos2010$HW57[is.na(datos2010$HW57)] <- meanhw57_2016
+datos2011$HW57[is.na(datos2011$HW57)] <- meanhw57_2016
+datos2012$HW57[is.na(datos2012$HW57)] <- meanhw57_2016
+datos2013$HW57[is.na(datos2013$HW57)] <- meanhw57_2016
+datos2014$HW57[is.na(datos2014$HW57)] <- meanhw57_2016
+datos2015$HW57[is.na(datos2015$HW57)] <- meanhw57_2016
+datos2016$HW57[is.na(datos2016$HW57)] <- meanhw57_2016
+datos2017$HW57[is.na(datos2017$HW57)] <- meanhw57_2016
+datos2018$HW57[is.na(datos2018$HW57)] <- meanhw57_2016
+datos2019$HW57[is.na(datos2019$HW57)] <- meanhw57_2016
+
+#HW70
+
+meanhw70_2016 <- round(median(datos2016$HW70,na.rm = TRUE),2)
+
+datos2007$HW70[is.na(datos2007$HW70)] <- meanhw70_2016
+datos2008$HW70[is.na(datos2008$HW70)] <- meanhw70_2016
+datos2009$HW70[is.na(datos2009$HW70)] <- meanhw70_2016
+datos2010$HW70[is.na(datos2010$HW70)] <- meanhw70_2016
+datos2011$HW70[is.na(datos2011$HW70)] <- meanhw70_2016
+datos2012$HW70[is.na(datos2012$HW70)] <- meanhw70_2016
+datos2013$HW70[is.na(datos2013$HW70)] <- meanhw70_2016
+datos2014$HW70[is.na(datos2014$HW70)] <- meanhw70_2016
+datos2015$HW70[is.na(datos2015$HW70)] <- meanhw70_2016
+datos2016$HW70[is.na(datos2016$HW70)] <- meanhw70_2016
+datos2017$HW70[is.na(datos2017$HW70)] <- meanhw70_2016
+datos2018$HW70[is.na(datos2018$HW70)] <- meanhw70_2016
+datos2019$HW70[is.na(datos2019$HW70)] <- meanhw70_2016
+
+#HW71
+
+meanhw71_2016 <- round(median(datos2016$HW71,na.rm = TRUE),2)
+
+datos2007$HW71[is.na(datos2007$HW71)] <- meanhw71_2016
+datos2008$HW71[is.na(datos2008$HW71)] <- meanhw71_2016
+datos2009$HW71[is.na(datos2009$HW71)] <- meanhw71_2016
+datos2010$HW71[is.na(datos2010$HW71)] <- meanhw71_2016
+datos2011$HW71[is.na(datos2011$HW71)] <- meanhw71_2016
+datos2012$HW71[is.na(datos2012$HW71)] <- meanhw71_2016
+datos2013$HW71[is.na(datos2013$HW71)] <- meanhw71_2016
+datos2014$HW71[is.na(datos2014$HW71)] <- meanhw71_2016
+datos2015$HW71[is.na(datos2015$HW71)] <- meanhw71_2016
+datos2016$HW71[is.na(datos2016$HW71)] <- meanhw71_2016
+datos2017$HW71[is.na(datos2017$HW71)] <- meanhw71_2016
+datos2018$HW71[is.na(datos2018$HW71)] <- meanhw71_2016
+datos2019$HW71[is.na(datos2019$HW71)] <- meanhw71_2016
+
+#HW72
+
+meanhw72_2016 <- round(median(datos2016$HW72,na.rm = TRUE),2)
+
+datos2007$HW72[is.na(datos2007$HW72)] <- meanhw72_2016
+datos2008$HW72[is.na(datos2008$HW72)] <- meanhw72_2016
+datos2009$HW72[is.na(datos2009$HW72)] <- meanhw72_2016
+datos2010$HW72[is.na(datos2010$HW72)] <- meanhw72_2016
+datos2011$HW72[is.na(datos2011$HW72)] <- meanhw72_2016
+datos2012$HW72[is.na(datos2012$HW72)] <- meanhw72_2016
+datos2013$HW72[is.na(datos2013$HW72)] <- meanhw72_2016
+datos2014$HW72[is.na(datos2014$HW72)] <- meanhw72_2016
+datos2015$HW72[is.na(datos2015$HW72)] <- meanhw72_2016
+datos2016$HW72[is.na(datos2016$HW72)] <- meanhw72_2016
+datos2017$HW72[is.na(datos2017$HW72)] <- meanhw72_2016
+datos2018$HW72[is.na(datos2018$HW72)] <- meanhw72_2016
+datos2019$HW72[is.na(datos2019$HW72)] <- meanhw72_2016
+
+#HW73
+meanhw73_2016 <- round(median(datos2016$HW73,na.rm = TRUE),2)
+
+datos2007$HW73[is.na(datos2007$HW73)] <- meanhw73_2016
+datos2008$HW73[is.na(datos2008$HW73)] <- meanhw73_2016
+datos2009$HW73[is.na(datos2009$HW73)] <- meanhw73_2016
+datos2010$HW73[is.na(datos2010$HW73)] <- meanhw73_2016
+datos2011$HW73[is.na(datos2011$HW73)] <- meanhw73_2016
+datos2012$HW73[is.na(datos2012$HW73)] <- meanhw73_2016
+datos2013$HW73[is.na(datos2013$HW73)] <- meanhw73_2016
+datos2014$HW73[is.na(datos2014$HW73)] <- meanhw73_2016
+datos2015$HW73[is.na(datos2015$HW73)] <- meanhw73_2016
+datos2016$HW73[is.na(datos2016$HW73)] <- meanhw73_2016
+datos2017$HW73[is.na(datos2017$HW73)] <- meanhw73_2016
+datos2018$HW73[is.na(datos2018$HW73)] <- meanhw73_2016
+datos2019$HW73[is.na(datos2019$HW73)] <- meanhw73_2016
+
+#V101
+
+meanV101_2016 <- round(median(datos2016$V101,na.rm = TRUE),2)
+
+datos2007$V101[is.na(datos2007$V101)] <- meanV101_2016
+datos2008$V101[is.na(datos2008$V101)] <- meanV101_2016
+datos2009$V101[is.na(datos2009$V101)] <- meanV101_2016
+datos2010$V101[is.na(datos2010$V101)] <- meanV101_2016
+datos2011$V101[is.na(datos2011$V101)] <- meanV101_2016
+datos2012$V101[is.na(datos2012$V101)] <- meanV101_2016
+datos2013$V101[is.na(datos2013$V101)] <- meanV101_2016
+datos2014$V101[is.na(datos2014$V101)] <- meanV101_2016
+datos2015$V101[is.na(datos2015$V101)] <- meanV101_2016
+datos2016$V101[is.na(datos2016$V101)] <- meanV101_2016
+datos2017$V101[is.na(datos2017$V101)] <- meanV101_2016
+datos2018$V101[is.na(datos2018$V101)] <- meanV101_2016
+datos2019$V101[is.na(datos2019$V101)] <- meanV101_2016
+
+#V102
+
+meanV102_2016 <- round(median(datos2016$V102,na.rm = TRUE),2)
+
+datos2007$V102[is.na(datos2007$V102)] <- meanV102_2016
+datos2008$V102[is.na(datos2008$V102)] <- meanV102_2016
+datos2009$V102[is.na(datos2009$V102)] <- meanV102_2016
+datos2010$V102[is.na(datos2010$V102)] <- meanV102_2016
+datos2011$V102[is.na(datos2011$V102)] <- meanV102_2016
+datos2012$V102[is.na(datos2012$V102)] <- meanV102_2016
+datos2013$V102[is.na(datos2013$V102)] <- meanV102_2016
+datos2014$V102[is.na(datos2014$V102)] <- meanV102_2016
+datos2015$V102[is.na(datos2015$V102)] <- meanV102_2016
+datos2016$V102[is.na(datos2016$V102)] <- meanV102_2016
+datos2017$V102[is.na(datos2017$V102)] <- meanV102_2016
+datos2018$V102[is.na(datos2018$V102)] <- meanV102_2016
+datos2019$V102[is.na(datos2019$V102)] <- meanV102_2016
+
+#V103
+
+meanV103_2016 <- round(median(datos2016$V103,na.rm = TRUE),2)
+
+datos2007$V103[is.na(datos2007$V103)] <- meanV103_2016
+datos2008$V103[is.na(datos2008$V103)] <- meanV103_2016
+datos2009$V103[is.na(datos2009$V103)] <- meanV103_2016
+datos2010$V103[is.na(datos2010$V103)] <- meanV103_2016
+datos2011$V103[is.na(datos2011$V103)] <- meanV103_2016
+datos2012$V103[is.na(datos2012$V103)] <- meanV103_2016
+datos2013$V103[is.na(datos2013$V103)] <- meanV103_2016
+datos2014$V103[is.na(datos2014$V103)] <- meanV103_2016
+datos2015$V103[is.na(datos2015$V103)] <- meanV103_2016
+datos2016$V103[is.na(datos2016$V103)] <- meanV103_2016
+datos2017$V103[is.na(datos2017$V103)] <- meanV103_2016
+datos2018$V103[is.na(datos2018$V103)] <- meanV103_2016
+datos2019$V103[is.na(datos2019$V103)] <- meanV103_2016
+
+#V104
+
+meanV104_2016 <- round(median(datos2016$V104,na.rm = TRUE),2)
+
+datos2007$V104[is.na(datos2007$V104)] <- meanV104_2016
+datos2008$V104[is.na(datos2008$V104)] <- meanV104_2016
+datos2009$V104[is.na(datos2009$V104)] <- meanV104_2016
+datos2010$V104[is.na(datos2010$V104)] <- meanV104_2016
+datos2011$V104[is.na(datos2011$V104)] <- meanV104_2016
+datos2012$V104[is.na(datos2012$V104)] <- meanV104_2016
+datos2013$V104[is.na(datos2013$V104)] <- meanV104_2016
+datos2014$V104[is.na(datos2014$V104)] <- meanV104_2016
+datos2015$V104[is.na(datos2015$V104)] <- meanV104_2016
+datos2016$V104[is.na(datos2016$V104)] <- meanV104_2016
+datos2017$V104[is.na(datos2017$V104)] <- meanV104_2016
+datos2018$V104[is.na(datos2018$V104)] <- meanV104_2016
+datos2019$V104[is.na(datos2019$V104)] <- meanV104_2016
+
+#V106
+
+meanV106_2016 <- round(median(datos2016$V106,na.rm = TRUE),2)
+
+datos2007$V106[is.na(datos2007$V106)] <- meanV106_2016
+datos2008$V106[is.na(datos2008$V106)] <- meanV106_2016
+datos2009$V106[is.na(datos2009$V106)] <- meanV106_2016
+datos2010$V106[is.na(datos2010$V106)] <- meanV106_2016
+datos2011$V106[is.na(datos2011$V106)] <- meanV106_2016
+datos2012$V106[is.na(datos2012$V106)] <- meanV106_2016
+datos2013$V106[is.na(datos2013$V106)] <- meanV106_2016
+datos2014$V106[is.na(datos2014$V106)] <- meanV106_2016
+datos2015$V106[is.na(datos2015$V106)] <- meanV106_2016
+datos2016$V106[is.na(datos2016$V106)] <- meanV106_2016
+datos2017$V106[is.na(datos2017$V106)] <- meanV106_2016
+datos2018$V106[is.na(datos2018$V106)] <- meanV106_2016
+datos2019$V106[is.na(datos2019$V106)] <- meanV106_2016
+
+#V113
+
+meanV113_2016 <- round(median(datos2016$V113,na.rm = TRUE),2)
+
+datos2007$V113[is.na(datos2007$V113)] <- meanV113_2016
+datos2008$V113[is.na(datos2008$V113)] <- meanV113_2016
+datos2009$V113[is.na(datos2009$V113)] <- meanV113_2016
+datos2010$V113[is.na(datos2010$V113)] <- meanV113_2016
+datos2011$V113[is.na(datos2011$V113)] <- meanV113_2016
+datos2012$V113[is.na(datos2012$V113)] <- meanV113_2016
+datos2013$V113[is.na(datos2013$V113)] <- meanV113_2016
+datos2014$V113[is.na(datos2014$V113)] <- meanV113_2016
+datos2015$V113[is.na(datos2015$V113)] <- meanV113_2016
+datos2016$V113[is.na(datos2016$V113)] <- meanV113_2016
+datos2017$V113[is.na(datos2017$V113)] <- meanV113_2016
+datos2018$V113[is.na(datos2018$V113)] <- meanV113_2016
+datos2019$V113[is.na(datos2019$V113)] <- meanV113_2016
+
+#V119
+
+meanV119_2016 <- round(median(datos2016$V119,na.rm = TRUE),2)
+
+datos2007$V119[is.na(datos2007$V119)] <- meanV119_2016
+datos2008$V119[is.na(datos2008$V119)] <- meanV119_2016
+datos2009$V119[is.na(datos2009$V119)] <- meanV119_2016
+datos2010$V119[is.na(datos2010$V119)] <- meanV119_2016
+datos2011$V119[is.na(datos2011$V119)] <- meanV119_2016
+datos2012$V119[is.na(datos2012$V119)] <- meanV119_2016
+datos2013$V119[is.na(datos2013$V119)] <- meanV119_2016
+datos2014$V119[is.na(datos2014$V119)] <- meanV119_2016
+datos2015$V119[is.na(datos2015$V119)] <- meanV119_2016
+datos2016$V119[is.na(datos2016$V119)] <- meanV119_2016
+datos2017$V119[is.na(datos2017$V119)] <- meanV119_2016
+datos2018$V119[is.na(datos2018$V119)] <- meanV119_2016
+datos2019$V119[is.na(datos2019$V119)] <- meanV119_2016
+
+#V122
+
+meanV122_2016 <- round(median(datos2016$V122,na.rm = TRUE),2)
+
+datos2007$V122[is.na(datos2007$V122)] <- meanV122_2016
+datos2008$V122[is.na(datos2008$V122)] <- meanV122_2016
+datos2009$V122[is.na(datos2009$V122)] <- meanV122_2016
+datos2010$V122[is.na(datos2010$V122)] <- meanV122_2016
+datos2011$V122[is.na(datos2011$V122)] <- meanV122_2016
+datos2012$V122[is.na(datos2012$V122)] <- meanV122_2016
+datos2013$V122[is.na(datos2013$V122)] <- meanV122_2016
+datos2014$V122[is.na(datos2014$V122)] <- meanV122_2016
+datos2015$V122[is.na(datos2015$V122)] <- meanV122_2016
+datos2016$V122[is.na(datos2016$V122)] <- meanV122_2016
+datos2017$V122[is.na(datos2017$V122)] <- meanV122_2016
+datos2018$V122[is.na(datos2018$V122)] <- meanV122_2016
+datos2019$V122[is.na(datos2019$V122)] <- meanV122_2016
+
+#Comprobamos que no hay valores faltantes
+
+sum(is.na(datos2007))
+sum(is.na(datos2008))
+sum(is.na(datos2009))
+sum(is.na(datos2010))
+sum(is.na(datos2011))
+sum(is.na(datos2012))
+sum(is.na(datos2013))
+sum(is.na(datos2014))
+sum(is.na(datos2015))
+sum(is.na(datos2016))
+sum(is.na(datos2017))
+sum(is.na(datos2018))
+sum(is.na(datos2019))
+
+
+
+
+
+
+
+```
+
+
+
+
+Pasamos la variable edad 'HW1' de meses a años para poder interpretarlo mejor.
+
+<br>
+
+
+```{r}
+datos2007$HW1 <-(datos2007$HW1)/12
+datos2008$HW1 <-(datos2008$HW1)/12
+datos2009$HW1 <-(datos2009$HW1)/12
+datos2010$HW1 <-(datos2010$HW1)/12
+datos2011$HW1 <-(datos2011$HW1)/12
+datos2012$HW1 <-(datos2012$HW1)/12
+datos2013$HW1 <-(datos2013$HW1)/12
+datos2014$HW1 <-(datos2014$HW1)/12
+datos2015$HW1 <-(datos2015$HW1)/12
+datos2016$HW1 <-(datos2016$HW1)/12
+datos2017$HW1 <-(datos2017$HW1)/12
+datos2018$HW1 <-(datos2018$HW1)/12
+datos2019$HW1 <-(datos2019$HW1)/12
+
+```
+
+Para nuestro modelo, la variable que queremos predecir será el nivel de hemoglobina 'HW53'. Según su valor, podemos encontrar diferentes niveles de anemia. Estos niveles vienen reflejados en la variable HW57:
+<br>
+
+- **Anemia grave:** niveles de hemoglobina menores de 7 g/dl. (HW57 = 1)
+- **Anemia moderada:** niveles de hemoglobina entre 7 y 10 g/dl. (HW57 = 2)
+- **Anemia leve:** niveles de hemoglobina entre 10 y 11 g/dl. (HW57 = 3)
+- **Sin anemia:** niveles de hemoglobina mayores a 11 g/dl. (HW57 = 4)
+
+Añadimos la variable 'Anemia', que indica, si es 1, que sí tiene anemia y si es 0, que no tiene anemia.
+
+```{r}
+datos$anemia <- ifelse(datos$HW53<11, 1, 0)
+
+```
+
+
+<br>
+
+Arreglamos la variable año 'HW19' para juntar los dataset en uno solo.
+
+<br>
+
+```{r}
+datos2007$HW19 <- 2007
+datos2008$HW19 <- 2008
+datos2009$HW19 <- 2009
+datos2010$HW19 <- 2010
+datos2011$HW19 <- 2011
+datos2012$HW19 <- 2012
+datos2013$HW19 <- 2013
+datos2014$HW19 <- 2014
+datos2015$HW19 <- 2015
+datos2016$HW19 <- 2016
+datos2017$HW19 <- 2017
+datos2018$HW19 <- 2018
+datos2019$HW19 <- 2019
+
+
+
+```
+
+Vemos si hay valores duplicados en nuestros datos. Si es el caso, nos quedamos con los valores únicos.
+
+```{r}
+nrow(datos2007[duplicated(datos2007), ])
+nrow(datos2008[duplicated(datos2008), ])
+nrow(datos2009[duplicated(datos2009), ])
+nrow(datos2010[duplicated(datos2010), ])
+nrow(datos2011[duplicated(datos2011), ])
+nrow(datos2012[duplicated(datos2012), ])
+nrow(datos2013[duplicated(datos2013), ])
+nrow(datos2014[duplicated(datos2014), ])
+nrow(datos2015[duplicated(datos2015), ])
+nrow(datos2016[duplicated(datos2016), ])
+nrow(datos2017[duplicated(datos2017), ])
+nrow(datos2018[duplicated(datos2018), ])
+nrow(datos2019[duplicated(datos2019), ])
+
+
+```
+No hay valores duplicados, por lo que, procedemos a unir los dataset de cada año, en un dataset único.
+
+
+<br>
+
+```{r}
+colnames(datos2008)[1]<-'ï..CASEID'
+colnames(datos2018)[1]<-'ï..CASEID'
+colnames(datos2019)[1]<-'ï..CASEID'
+
+
+```
+
+<br>
+```{r}
+
+
+datos <- rbind(datos2007,datos2008)
+datos <- rbind(datos,datos2009)
+datos <- rbind(datos,datos2010)
+datos <- rbind(datos,datos2011)
+datos <- rbind(datos,datos2012)
+datos <- rbind(datos,datos2013)
+datos <- rbind(datos,datos2014)
+datos <- rbind(datos,datos2015)
+datos <- rbind(datos,datos2016)
+datos <- rbind(datos,datos2017)
+datos <- rbind(datos,datos2018)
+datos <- rbind(datos,datos2019)
+
+#Nos quedamos con las variables relevantes
+
+datos<- datos %>% select(ï..CASEID,HW1,HW2,HW3,HW53,V101,V102,V103,V104,V106,V113,V119,V122)
+
+datos$V101<-as.character(datos$V101)
+datos$V102<-as.character(datos$V102)
+datos$V103<-as.character(datos$V103)
+datos$V104<-as.character(datos$V104)
+datos$V106<-as.character(datos$V106)
+datos$V113<-as.character(datos$V113)
+datos$V119<-as.character(datos$V119)
+datos$V122<-as.character(datos$V122)
+str(datos)
+```
+Calculamos el IMC como $IMC = \frac{peso}{altura^2}$ para añadirlo al modelo.
+
+Primero,pasamos la altura de centrímetros a metros.
+
+```{r}
+datos$HW3 <- datos$HW3/100
+
+IMC<- round(datos$HW2/((datos$HW3)**2),2)
+datos<-cbind(datos,IMC)
+
+```
+
+Borramos del dataset las variables peso y altura, para modelar solo con la variable IMC.
+
+```{r}
+datos$HW2<-NULL
+datos$HW3<-NULL
+```
+
+
+Outliers:
+
+
+```{r}
+datosanemia$HW53 <- as.numeric(datosanemia$HW53)
+g_caja<-boxplot(datosanemia$HW53, col="skyblue", frame.plot=F)
+```
+
+```{r}
+g_caja$out
+```
+
+
+```{r}
+datosanemia<-datosanemia[!(datosanemia$HW53 %in% g_caja$out),]
+boxplot(datosanemia$HW53, col="skyblue", frame.plot=F)
+```
+
+
+Exportamos los datos limpios para realizar el modelado
+
+<br>
+
+
+
+```{r}
+write.csv2(datosanemia, "datosanemia_sin_outliers.csv")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
