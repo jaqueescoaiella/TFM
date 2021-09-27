@@ -1,0 +1,81 @@
+
+---
+
+
+```{r,warning=FALSE,message=FALSE}
+# Carga paquetes necesarios
+library(readr)
+library(class)
+library(MASS)
+library(car)
+library(ggplot2)
+library(gam)
+library(ROCR)
+library(pander)
+library(stringr)
+library(plyr)
+library(earth)
+
+
+```
+
+
+
+
+
+```{r}
+# 
+
+
+df <- read.csv(file.choose(), header = TRUE, sep = ";", dec = ",")
+
+
+```
+
+```{r}
+# 
+
+data = df[,-1:-2]
+data = data[,-4]
+data = data[,-7]
+data$V101 <- as.character(data$V101)
+data$V102 <- as.character(data$V102)
+data$V103 <- as.character(data$V103)
+
+data$V106 <- as.character(data$V106)
+data$V113 <- as.character(data$V113)
+data$V119 <- as.character(data$V119)
+
+data <-data[data$HW1 > 0 ,]
+
+data
+
+
+modelo_anemia_logit <- glm(anemia ~.,data = data, family =binomial(link = "logit"))
+
+
+modelo_anemia_probit <- glm(anemia~.,data=data,family=binomial(link="probit"))
+
+summary(modelo_anemia_logit)
+summary(modelo_anemia_probit)
+
+#auc(data$anemia, predict(modelo_anemia_logit,data,type="response"))
+#(data$anemia, predict(modelo_anemia_probit,data,type="response"))
+
+predict <- predict(modelo_anemia_probit,data,type="response")
+ggplot(data,aes(x=predict, fill=as.factor(anemia)))+geom_density(alpha=.5)
+```
+
+
+```
+
+
+
+`
+
+
+
+
+
+
+
